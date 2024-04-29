@@ -1,0 +1,60 @@
+<!-- admin-panel.component.html -->
+<div>
+    <input type="text" [(ngModel)]="searchTerm" placeholder="Search Profiles" (keyup)="searchProfiles($event)" />
+    <select [(ngModel)]="filterCriteria" (change)="filterProfiles()">
+      <option value="">Filter by...</option>
+      <option value="name">Name</option>
+      <option value="description">Description</option>
+      <!-- Add more filtering options as needed -->
+    </select>
+</div>
+<div *ngIf="profileForm.controls['name'].errors && profileForm.controls['name'].touched">
+    <div *ngIf="profileForm.controls.['name'].errors.required">
+      Name is required.
+    </div>
+</div>
+<div *ngIf="profileForm.controls.['description'].errors && profileForm.controls.['description'].touched">
+    <div *ngIf="profileForm.controls.['description'].errors?.required">
+      Description is required.
+    </div>
+</div>
+<div *ngIf="profiles">
+    <h2>Profiles</h2>
+    <ul>
+      <li *ngFor="let profile of profiles">
+        <span>{{ profile.name }}</span>
+        <span>{{ profile.description }}</span>
+        <button (click)="deleteProfile(profile)">Delete</button>
+        <button (click)="editProfile(profile)">Edit</button>
+      </li>
+    </ul>
+  
+    <h2>Add Profile</h2>
+    <div>
+      <label for="profileName">Name:</label>
+      <input type="text" id="profileName" [(ngModel)]="newProfile.name" />
+  
+      <label for="profileDescription">Description:</label>
+      <input type="text" id="profileDescription" [(ngModel)]="newProfile.description" />
+  
+      <button (click)="addProfile(newProfile.name, newProfile.description)">Add Profile</button>
+    </div>
+  
+    <h2>Edit Profile</h2>
+    <div *ngIf="selectedProfile">
+      <label for="editProfileName">Name:</label>
+      <input type="text" id="editProfileName" [(ngModel)]="selectedProfile.name" />
+  
+      <label for="editProfileDescription">Description:</label>
+      <input type="text" id="editProfileDescription" [(ngModel)]="selectedProfile.description" />
+  
+      <button (click)="updateProfile(selectedProfile)">Update Profile</button>
+    </div>
+</div>
+<div *ngIf="user.isLoggedIn">
+    <h1>Welcome, {{ user.name }}</h1>
+    <p>Email: {{ user.email }}</p>
+  </div>
+  
+  <button (click)="submitForm()">Submit</button>
+  
